@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.nbrendah</groupId>
+		<artifactId>tracing-sample</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>docker</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+
+
+	<name>outreachy-tracing-docker</name>
+	<description>docker module for tracing with openTelemetry</description>
+	<packaging>pom</packaging>
+
+	<build>
+		<plugins>
+			<plugin>
+			    <groupId>io.fabric8</groupId>
+			    <artifactId>docker-maven-plugin</artifactId>
+				<executions>
+		             <execution>
+		                 <id>start</id>
+		                 <phase>pre-integration-test</phase>
+		                 <goals>
+		                     <goal>build</goal>
+		                     <goal>start</goal>
+		                 </goals>
+		             </execution>
+		             <execution>
+		                 <id>stop</id>
+		                 <phase>post-integration-test</phase>
+		                 <goals>
+		                     <goal>stop</goal>
+		                 </goals>
+		             </execution>
+		         </executions>
+			     <configuration>
+			        <images>
+			            <image>	
+			            	<name>/${project.artifactId}</name>		
+			                <build>
+			                    <dockerFile>${project.basedir}/Dockerfile</dockerFile>
+			                    <tags>
+							      	<tag>${project.version}</tag>
+                                	<tag>latest</tag>
+							    </tags>
+			                </build>
+			            </image>			
+			        </images>		        
+			     </configuration>
+			</plugin>			
+		</plugins>
+		
+	</build>
+	
+</project>
